@@ -30,7 +30,7 @@ public class FilaBanco {
     }
 
     private void heapifyUp(int index) {
-        if (hasParent(index)) {
+        if (!(hasParent(index))) {
             return;
         }
         int parentIndex = getParentIndex(index);
@@ -71,5 +71,67 @@ public class FilaBanco {
     }
 
     public void remove() {
+        pessoas[0] = pessoas[getSize() - 1];
+        pessoas[getSize() - 1] = null;
+        size--;
+        heapifyDown(0);
+    }
+
+    private void heapifyDown(int index) {
+        int leftChild = index * 2 + 1;
+        int rightChild = index * 2 + 2;
+        int childIndex = -1;
+
+        if (leftChild < getSize()) {
+            childIndex = leftChild;
+        }
+
+        if (childIndex < 0) {
+            return;
+        }
+
+        if (rightChild < getSize()) {
+            if (pessoas[rightChild].getIdade() > pessoas[leftChild].getIdade()) {
+                childIndex = rightChild;
+            }
+        }
+
+        if (pessoas[index].getIdade() < pessoas[childIndex].getIdade()) {
+            Pessoa tmp = pessoas[index];
+            pessoas[index] = pessoas[childIndex];
+            pessoas[childIndex] = tmp;
+            heapifyDown(childIndex);
+        }
+    }
+
+    public Pessoa[] heap() {
+        if (size != 1) {
+            Pessoa auxiliar;
+            auxiliar = pessoas[getSize() - 1];
+            pessoas[getSize() - 1] = pessoas[0];
+            pessoas[0] = auxiliar;
+            size--;
+            heapifyDown(0);
+            return heapSort();
+        } else {
+            return pessoas;
+        }
+    }
+
+    public Pessoa[] heapSort() {
+        FilaBanco fila = new FilaBanco();
+        fila.pessoas = Arrays.copyOfRange(this.pessoas, 0, this.size);
+        fila.size = size;
+        fila.capacity = capacity;
+        return fila.heap();
+    }
+
+    @Override
+    public String toString() {
+        String ultimo = null;
+        for (Pessoa pessoa: pessoas) {
+            ultimo = ultimo + pessoa.toString();
+        }
+        return ultimo;
     }
 }
