@@ -7,7 +7,7 @@ import static org.junit.Assert.*;
 
 public class FilaBancoTest {
 
-    FilaBanco fila = null;
+    private FilaBanco fila = null;
 
     @Before
     public void init() {
@@ -48,6 +48,7 @@ public class FilaBancoTest {
 
         //Act
         grandma.setIdade(77);
+        fila.heap();
 
         //Assert
         assertSame(grandma, fila.peek());
